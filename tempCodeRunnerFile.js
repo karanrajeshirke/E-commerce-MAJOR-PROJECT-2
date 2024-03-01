@@ -1,0 +1,1 @@
+productCounts[obj.name
