@@ -8,13 +8,14 @@ import { useAuth } from "../src/context/Auth";
 import { Button, Card } from "antd";
 import { Link } from "react-router-dom";
 const { Meta } = Card;
-import { Avatar } from "antd";
+import { Rate } from "antd";
+
 const ProductDetails = () => {
   const navigate = useNavigate();
   const { slug } = useParams();
   const [product, setProduct] = useState("");
   const [similarProduct, setSimilarProduct] = useState("");
-  // const [cart, setCart] = useCart();
+  const [reviews, setReviews] = useState("");
   const [auth, setAuth] = useAuth();
 
   const getProductDetails = async () => {
@@ -22,6 +23,8 @@ const ProductDetails = () => {
       let response = await axios.get(
         `http://localhost:8080/api/v1/product/get-single-product/${slug}`
       );
+      console.log(response.data.product.reviews);
+      setReviews(response.data.product.reviews);
       setProduct(response.data.product);
       getSimilarProducts(
         response.data.product._id,
@@ -38,7 +41,6 @@ const ProductDetails = () => {
         `http://localhost:8080/api/v1/product/get-similar-products/${pid}/${cid}`
       );
       setSimilarProduct(response.data.simPro);
-      console.log(response.data.simPro);
     } catch (error) {
       console.log(error);
     }
@@ -74,12 +76,6 @@ const ProductDetails = () => {
 
       console.log(error);
     }
-
-    // setCart((prev) => {
-    //   const updatedCart = [...prev, product];
-    //   localStorage.setItem("cart", JSON.stringify(updatedCart));
-    //   return updatedCart;
-    // });
   };
 
   return (
@@ -100,16 +96,6 @@ const ProductDetails = () => {
               )
             }
           ></Card>
-          {/* <img
-            src={`http://localhost:8080/api/v1/product/get-product-photo/${product._id}`}
-            alt={product.name}
-            className="img-fluid rounded"
-            style={{
-              width: "400px",
-              height: "400px",
-              boxShadow: "0 8px 16px rgba(0,0,0,0.2)",
-            }}
-          /> */}
         </div>
         <div
           className="col-6   d-flex flex-column justify-content-around ml-5"
@@ -176,9 +162,40 @@ const ProductDetails = () => {
 
         <hr className="mt-3" />
 
+        <div className="col-12">
+          <h3>Reviews</h3>
+
+          <div className="d-flex flex-wrap">
+            {reviews &&
+              reviews.map((item, index) => {
+                return (
+                  <div class="card p-4 m-3 w-25" key={index}>
+                    <div class="card-body">
+                      <div>
+                        <Rate value={item.rating} />
+                      </div>
+                      <br />
+                      <div>
+                        <p>
+                          <b>Author :</b>
+                          {item.author.name}
+                        </p>
+                      </div>
+                      <div>
+                        <p>
+                          <b>Comment :</b> {item.comment}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
+        </div>
+        <hr className="mt-3" />
         <div className="col-12 mt-3 ">
           <h3>Similar Products...</h3>
-          <div className=" d-flex justify-content-between flex-wrap bg-danger">
+          <div className=" d-flex justify-content-between flex-wrap ">
             {similarProduct &&
               similarProduct.map((item, index) => (
                 <Card
@@ -216,8 +233,6 @@ const ProductDetails = () => {
                     <br />
                     <Link to={`/product/${item.slug}`}>More Details</Link>
                   </p>
-
-                  {/* Add any other details here */}
                 </Card>
               ))}
           </div>

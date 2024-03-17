@@ -157,7 +157,15 @@ export const getSingleProductController = async (req, res) => {
     const product = await productModel
       .findOne({ slug })
       .select("-photo")
-      .populate("seller")
+      .populate("seller").populate(
+       {
+        path:"reviews",
+        populate:
+        {
+          path:"author"
+        }
+       }
+      )
       .populate("category");
     res.status(200).send({
       success: true,
