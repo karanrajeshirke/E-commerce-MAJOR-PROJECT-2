@@ -16,6 +16,8 @@ getStatusCount,
 getIndividualProductsCount,
 adminProfileDetails,
 getbill,
+deleteCartItem,
+getCartSizeController,
 } from "../controllers/productController.js";
 import { isAdmin, isAuthorizedAdmin, requireSignIn } from "../middlewares/authMiddleware.js";
 import productModel from "../models/productModel.js";
@@ -37,6 +39,11 @@ router.get('/get-similar-products/:pid/:categoryId',getSimilarProductController)
 router.get('/add-to-cart/:pid',requireSignIn,AddToCart)
 //! get items from cart
 router.get('/cart',requireSignIn,getFromCart)
+
+
+router.get('/cartsize',requireSignIn,getCartSizeController)
+
+router.delete('/deleteCart/:pid',requireSignIn,deleteCartItem)
 
 //!place order we are changing get request to post
 router.post('/place-order',requireSignIn,placeOrder)

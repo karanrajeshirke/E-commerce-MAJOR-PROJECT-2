@@ -21,6 +21,26 @@ var gateway = new braintree.BraintreeGateway({
   privateKey: process.env.BRAINTREE_PRIVATE_KEY,
 });
 
+export const brainTreePaymentController = async (req, res) => {
+  const { nonce } = req.body;
+
+  console.log(nonce);
+  try {
+    let transactionResponse = await gateway.transaction.sale({
+      amount: 1,
+      paymentMethodNonce: nonce,
+      options: {
+        submitForSettlement: true,
+      },
+    });
+
+    console.log(transactionResponse);
+    res.status(200).send({ transactionResponse });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 //!creating an product only admin access
 export const createProductController = async (req, res) => {
   try {
@@ -180,58 +200,6 @@ export const deleteProductController = async (req, res) => {
     });
   }
 };
-
-//!----------------------
-// export const deleteProductController = async (req, res) => {
-//   try {
-//     const { pid } = req.params;
-
-//     // Find the product to be deleted
-//     const deletedProduct = await productModel.findById(pid).select("-photo");
-
-//     // If the product doesn't exist, return an error
-//     if (!deletedProduct) {
-//       return res.status(404).send({
-//         success: false,
-//         message: "Product not found",
-//       });
-//     }
-
-//     // Remove references to the deleted product from other models
-//     await userModel.updateMany(
-//       { $or: [{ cart: deletedProduct._id }, { 'orders.product': deletedProduct._id }] },
-//       { $pull: { cart: deletedProduct._id, 'orders.$[].product': deletedProduct._id } }
-//     );
-//     await adminOrderModel.updateMany(
-//       { "products.product": deletedProduct._id },
-//       { $pull: { products: { product: deletedProduct._id } } }
-//     );
-//     await orderModel.updateMany(
-//       { "productArr.product": deletedProduct._id },
-//       { $pull: { productArr: { product: deletedProduct._id } } }
-//     );
-
-//     // Remove references from the orderPage model
-//     await orderPageModel.deleteMany({ product: deletedProduct._id });
-
-//     // Delete the product
-//     await deletedProduct.deleteOne();
-
-//     // Send response
-//     res.status(200).send({
-//       success: true,
-//       message: "Product deleted",
-//       deletedProduct,
-//     });
-//   } catch (error) {
-//     console.log(error.message);
-//     return res.status(500).send({
-//       success: false,
-//       message: "Something went wrong while deleting the product",
-//       error: error.message,
-//     });
-//   }
-// };
 
 export const getProductPhotoController = async (req, res) => {
   try {
@@ -440,6 +408,44 @@ export const getFromCart = async (req, res) => {
   }
 };
 
+//! remove item from cart
+
+export const deleteCartItem = async (req, res) => {
+  try {
+    const id = req.user._id;
+    const { pid } = req.params;
+
+    const updatedCart = await userModel.findByIdAndUpdate(id, {
+      $pull: { cart: pid },
+    });
+
+    res.status(200).send({
+      message: "removed from cart",
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getCartSizeController = async (req, res) => {
+  try {
+    const id = req.user._id;
+
+    const user = await userModel.findById(id).populate({
+      path: "cart",
+      select: "-photo",
+    });
+
+    res.status(200).send(
+      {
+        length:user.cart.length
+      }
+    )
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 //! get bill temporary
 
 export const getbill = async (req, res) => {
@@ -473,16 +479,9 @@ export const placeOrder = async (req, res) => {
   try {
     const orderData = req.body.orderData;
     const orderDropDetails = req.body.orderDropDetails;
-
-    const address = {
-      country: orderDropDetails.country,
-      houseadd: orderDropDetails.houseadd,
-      city: orderDropDetails.city,
-      state: orderDropDetails.state,
-      postcode: orderDropDetails.postcode,
-    };
-
-    console.log(address);
+    const nonce = req.body.nonce;
+    let userId = req.user._id;
+    const user = await userModel.findById(userId);
 
     if (!orderData.length) {
       return res.status(500).send({
@@ -490,112 +489,141 @@ export const placeOrder = async (req, res) => {
       });
     }
 
-    for (const order of orderData) {
-      const newProduct = new orderPageModel({
-        product: order.productId,
-        quantity: order.quantity,
-        country: orderDropDetails.country,
-        houseadd: orderDropDetails.houseadd,
-        city: orderDropDetails.city,
-        state: orderDropDetails.state,
-        postcode: orderDropDetails.postcode,
-      });
-
-      const savedProduct = await newProduct.save();
-    }
-
-    let userId = req.user._id;
-
-    const user = await userModel.findById(userId);
-
-    const formattedOrders = orderData.map((order) => ({
-      product: order.productId,
-      quantity: order.quantity,
-      country: orderDropDetails.country,
-      houseadd: orderDropDetails.houseadd,
-      city: orderDropDetails.city,
-      state: orderDropDetails.state,
-      postcode: orderDropDetails.postcode,
-    }));
-
-    console.log(formattedOrders);
-    user.orders.push(formattedOrders);
-
-    await user.save();
-
-    console.log(user);
-
     const cartItems = await userModel.findById(userId).populate({
       path: "cart",
       select: "-photo",
     });
 
-    for (const item of orderData) {
-      let id = item.productId;
-      await productModel.findByIdAndUpdate(id, {
-        $inc: { inStock: -item.quantity },
-      });
+    let totalAmount = 0;
+    for (let i = 0; i < orderData.length; i++) {
+      totalAmount =
+        totalAmount + orderData[i].quantity * cartItems.cart[i].price;
     }
 
-    const products = cartItems.cart.map((item, index) => ({
-      product: item._id,
-      status: "Not Process",
-      quantity: req.body.orderData[index].quantity,
-    }));
+    console.log(totalAmount);
 
-    const buyerExists = await orderModel.findOne({ buyer: userId });
-    if (buyerExists) {
-      buyerExists.productArr.push(...products);
-      await buyerExists.save();
-    } else {
-      const order = new orderModel({
-        buyer: userId,
-        productArr: products,
-      });
+    let transactionResponse = await gateway.transaction.sale(
+      {
+        amount: totalAmount,
+        paymentMethodNonce: nonce,
+        options: {
+          submitForSettlement: true,
+        },
+      },
+      async function (err, result) {
+        if (result) {
+          const address = {
+            country: orderDropDetails.country,
+            houseadd: orderDropDetails.houseadd,
+            city: orderDropDetails.city,
+            state: orderDropDetails.state,
+            postcode: orderDropDetails.postcode,
+          };
 
-      await order.save();
-    }
+          for (const order of orderData) {
+            const newProduct = new orderPageModel({
+              product: order.productId,
+              quantity: order.quantity,
+              country: orderDropDetails.country,
+              houseadd: orderDropDetails.houseadd,
+              city: orderDropDetails.city,
+              state: orderDropDetails.state,
+              postcode: orderDropDetails.postcode,
+            });
 
-    const productsBySeller = {};
-    for (const item of orderData) {
-      const productId = item.productId;
+            const savedProduct = await newProduct.save();
+          }
 
-      const product = await productModel.findById(productId);
-      const sellerId = product.seller;
+          const formattedOrders = orderData.map((order) => ({
+            product: order.productId,
+            quantity: order.quantity,
+            country: orderDropDetails.country,
+            houseadd: orderDropDetails.houseadd,
+            city: orderDropDetails.city,
+            state: orderDropDetails.state,
+            postcode: orderDropDetails.postcode,
+          }));
 
-      if (!productsBySeller[sellerId]) {
-        productsBySeller[sellerId] = [];
+          user.orders.push(formattedOrders);
+
+          await user.save();
+
+          for (const item of orderData) {
+            let id = item.productId;
+            await productModel.findByIdAndUpdate(id, {
+              $inc: { inStock: -item.quantity },
+            });
+          }
+
+          const products = cartItems.cart.map((item, index) => ({
+            product: item._id,
+            status: "Not Process",
+            quantity: req.body.orderData[index].quantity,
+          }));
+
+          const buyerExists = await orderModel.findOne({ buyer: userId });
+          if (buyerExists) {
+            buyerExists.productArr.push(...products);
+            await buyerExists.save();
+          } else {
+            const order = new orderModel({
+              buyer: userId,
+              productArr: products,
+            });
+
+            await order.save();
+          }
+
+          const productsBySeller = {};
+          for (const item of orderData) {
+            const productId = item.productId;
+
+            const product = await productModel.findById(productId);
+            const sellerId = product.seller;
+
+            if (!productsBySeller[sellerId]) {
+              productsBySeller[sellerId] = [];
+            }
+            productsBySeller[sellerId].push({
+              product: productId,
+              buyer: userId,
+              status: "Not Process",
+              quantity: item.quantity,
+            });
+          }
+
+          for (const sellerId in productsBySeller) {
+            let adminOrder = await adminOrderModel.findOne({
+              seller: sellerId,
+            });
+
+            if (!adminOrder) {
+              adminOrder = new adminOrderModel({
+                seller: sellerId,
+                products: productsBySeller[sellerId],
+              });
+            } else {
+              adminOrder.products.push(...productsBySeller[sellerId]);
+            }
+
+            await adminOrder.save();
+
+            const user = await userModel.findById(userId);
+            user.cart = [];
+            await user.save();
+          }
+
+          return res.status(200).send({
+            message: "Order placed successfully",
+          });
+        } else {
+          res.status(400).send({
+            message: "Something went wrong in payment",
+            err,
+          });
+        }
       }
-      productsBySeller[sellerId].push({
-        product: productId,
-        buyer: userId,
-        status: "Not Process",
-        quantity: item.quantity,
-      });
-    }
-
-    for (const sellerId in productsBySeller) {
-      let adminOrder = await adminOrderModel.findOne({ seller: sellerId });
-
-      if (!adminOrder) {
-        adminOrder = new adminOrderModel({
-          seller: sellerId,
-          products: productsBySeller[sellerId],
-        });
-      } else {
-        adminOrder.products.push(...productsBySeller[sellerId]);
-      }
-
-      await adminOrder.save();
-
-      const user = await userModel.findById(userId);
-      user.cart = [];
-      await user.save();
-    }
-
-    return res.status(200).send({
-      message: "Order placed successfully",
-    });
+    );
   } catch (error) {
     console.error("Error placing order:", error);
     res.status(500).json({ error: "Failed to place order" });
@@ -775,6 +803,7 @@ export const getIndividualProductsCount = async (req, res) => {
   try {
     const id = req.user._id;
 
+    console.log(id);
     const data = await adminOrderModel.findOne({ seller: id }).populate({
       path: "products.product",
       select: "-photo",
@@ -849,62 +878,3 @@ export const brainTreeTokenController = async (req, res) => {
     console.log(error);
   }
 };
-
-export const brainTreePaymentController = async () => {
-  console.log("working");
-};
-
-// admin ordrer
-
-// export const placeAdminOrder = async (req, res) => {
-//   try {
-//     const userId = req.user._id;
-//     const cartItems = await userModel.findById(userId).populate("cart");
-
-//     // Group products by seller (trader)
-//     const productsBySeller = {};
-
-//     cartItems.cart.forEach((item) => {
-//       const sellerId = item.seller; // Assuming each product has a 'seller' field referencing the seller's ID
-//       if (!productsBySeller[sellerId]) {
-//         productsBySeller[sellerId] = [];
-//       }
-//       productsBySeller[sellerId].push({
-//         product: item._id,
-//         buyer: userId,
-//       });
-//     });
-
-//     console.log(productsBySeller);
-
-//     // Create or update admin order documents for each seller
-//     const adminOrders = [];
-//     for (const sellerId in productsBySeller) {
-//       let adminOrder = await adminOrderModel.findOne({ seller: sellerId });
-
-//       if (!adminOrder) {
-//         // If admin order doesn't exist for this seller, create a new one
-//         adminOrder = new adminOrderModel({
-//           seller: sellerId,
-//           products: productsBySeller[sellerId],
-//         });
-//       } else {
-//         // If admin order exists, push new products to existing products array from cart we did loop bcoz the cart can contain multiple items
-//         productsBySeller[sellerId].forEach((product) => {
-//           adminOrder.products.push(product);
-//         });
-//       }
-
-//       await adminOrder.save();
-//       adminOrders.push(adminOrder);
-//     }
-
-//     // Respond with success message
-//     res
-//       .status(200)
-//       .json({ message: "Admin orders placed successfully", adminOrders });
-//   } catch (error) {
-//     console.error("Error placing admin orders:", error);
-//     res.status(500).json({ error: "Failed to place admin orders" });
-//   }
-// };

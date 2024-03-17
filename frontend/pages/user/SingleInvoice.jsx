@@ -90,102 +90,104 @@ const SingleInvoice = () => {
               Invoice Page
             </NavLink>
           </div>
-          <div className="container col-9 p-5" ref={pdfRef}>
-            <div className="row pad-top-botm client-info">
-              <div className="col-lg-6 col-md-6 col-sm-6">
-                <h4>
-                  <strong>Client Information</strong>
-                </h4>
-                <strong>{userActive.name}</strong>
-                <br />
-                <b>Address :</b> {orders[0]?.houseadd}
-                <br />
-                {orders[0]?.country}
-                <br />
-                <b>Call :</b>
-                {userActive.phone}
-                <br />
-                <b>E-mail :</b> {userActive.email}
-              </div>
-              <div className="col-lg-6 col-md-6 col-sm-6">
-                <h4>
-                  <strong>Payment Details </strong>
-                </h4>
-                <b>Bill Amount : {toINR(totalAmount * 1.1)}</b>
-                <br />
-                <b>Payment Status : Paid </b>
-                <br />
-                Purchase Date : {formatDate(orders[0]?.date)}
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-lg-12 col-md-12 col-sm-12">
-                <div className="table-responsive">
-                  <table className="table table-striped table-bordered table-hover">
-                    <thead>
-                      <tr>
-                        <th>Product Name</th>
-                        <th>Bought From</th>
-                        <th>Quantity</th>
-                        <th>Unit Price</th>
-                        <th>Sub Total</th>
-                      </tr>
-                    </thead>
-                    {orders && (
-                      <tbody>
-                        {orders &&
-                          orders.map((item) => (
-                            <tr key={item.product._id}>
-                              <td>{item.product.name}</td>
-                              <td>{item.product.seller.name}</td>
-                              <td>{item.quantity}</td>
-                              <td>{toINR(item.product.price)}</td>
-                              <td>
-                                {toINR(item.product.price * item.quantity)}
-                              </td>
-                            </tr>
-                          ))}
-                      </tbody>
-                    )}
-                  </table>
-                </div>
-                <hr />
-                <div className="ttl-amts">
-                  <h5>Total Amount : {toINR(totalAmount)}</h5>
-                </div>
-                <hr />
-                <div className="ttl-amts">
-                  <h5>Tax : {toINR(totalAmount * 0.1)}( by 10 % on bill )</h5>
-                </div>
-                <hr />
-                <div className="ttl-amts">
+          <div className="main-container  d-flex justify-content-center p-4">
+            <div className="invoice-container col-9 p-5  " ref={pdfRef}>
+              <div className="row pad-top-botm client-info">
+                <div className="col-lg-6 col-md-6 col-sm-6">
                   <h4>
-                    <strong>Bill Amount : {toINR(totalAmount * 1.1)}</strong>
+                    <strong>Client Information</strong>
                   </h4>
+                  <strong>{userActive.name}</strong>
+                  <br />
+                  <b>Address :</b> {orders[0]?.houseadd}
+                  <br />
+                  {orders[0]?.country}
+                  <br />
+                  <b>Call :</b>
+                  {userActive.phone}
+                  <br />
+                  <b>E-mail :</b> {userActive.email}
+                </div>
+                <div className="col-lg-6 col-md-6 col-sm-6">
+                  <h4>
+                    <strong>Payment Details </strong>
+                  </h4>
+                  <b>Bill Amount : {toINR(totalAmount * 1.1)}</b>
+                  <br />
+                  <b>Payment Status : Paid </b>
+                  <br />
+                  Purchase Date : {formatDate(orders[0]?.date)}
                 </div>
               </div>
-            </div>
-            <div className="row">
-              <div className="col-lg-12 col-md-12 col-sm-12">
-                <strong> Important: </strong>
-                <ol>
-                  <li>
-                    This is an electronic generated invoice so doesn't require
-                    any signature.
-                  </li>
-                  <li>
-                    Please read all terms and polices on www.yourdomaon.com for
-                    returns, replacement and other issues.
-                  </li>
-                </ol>
+              <div className="row">
+                <div className="col-lg-12 col-md-12 col-sm-12">
+                  <div className="table-responsive">
+                    <table className="table table-striped table-bordered table-hover">
+                      <thead>
+                        <tr>
+                          <th>Product Name</th>
+                          <th>Bought From</th>
+                          <th>Quantity</th>
+                          <th>Unit Price</th>
+                          <th>Sub Total</th>
+                        </tr>
+                      </thead>
+                      {orders && (
+                        <tbody>
+                          {orders &&
+                            orders.map((item) => (
+                              <tr key={item.product._id}>
+                                <td>{item.product.name}</td>
+                                <td>{item.product.seller.name}</td>
+                                <td>{item.quantity}</td>
+                                <td>{toINR(item.product.price)}</td>
+                                <td>
+                                  {toINR(item.product.price * item.quantity)}
+                                </td>
+                              </tr>
+                            ))}
+                        </tbody>
+                      )}
+                    </table>
+                  </div>
+                  <hr />
+                  <div className="ttl-amts">
+                    <h5>Total Amount : {toINR(totalAmount)}</h5>
+                  </div>
+                  <hr />
+                  <div className="ttl-amts">
+                    <h5>Tax : {toINR(totalAmount * 0.1)}( by 10 % on bill )</h5>
+                  </div>
+                  <hr />
+                  <div className="ttl-amts">
+                    <h4>
+                      <strong>Bill Amount : {toINR(totalAmount * 1.1)}</strong>
+                    </h4>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="row pad-top-botm">
-              <div className="col-lg-12 col-md-12 col-sm-12">
-                <hr />
-                <button className="btn btn-success" onClick={downloadPdf}>
-                  Download PDF
-                </button>
+              <div className="row">
+                <div className="col-lg-12 col-md-12 col-sm-12">
+                  <strong> Important: </strong>
+                  <ol>
+                    <li>
+                      This is an electronic generated invoice so doesn't require
+                      any signature.
+                    </li>
+                    <li>
+                      Please read all terms and polices on www.yourdomaon.com
+                      for returns, replacement and other issues.
+                    </li>
+                  </ol>
+                </div>
+              </div>
+              <div className="row pad-top-botm">
+                <div className="col-lg-12 col-md-12 col-sm-12">
+                  <hr />
+                  <button className="btn btn-success" onClick={downloadPdf}>
+                    Download PDF
+                  </button>
+                </div>
               </div>
             </div>
           </div>

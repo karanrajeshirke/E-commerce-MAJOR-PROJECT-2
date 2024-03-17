@@ -31,12 +31,14 @@ const CheckOut = () => {
     });
   };
 
+  
   useEffect(() => {
     setOrderData(cartGlobal);
     if (cartGlobal) {
       calculateTotal(cartGlobal.frontendCart);
     }
   }, []);
+
 
   useEffect(() => {
     const fetchClientToken = async () => {
@@ -57,13 +59,31 @@ const CheckOut = () => {
     setInstance(newInstance);
   };
 
-  const PlaceOrder = async (event) => {
-
-
+  const handlePayment = async () => {
     try {
+      const { nonce } = await instance.requestPaymentMethod();
+      const response = await axios.post(
+        "http://localhost:8080/api/v1/product/braintree/payment",
+        { nonce },
+        {
+          headers: {
+            Authorization: auth.token,
+          },
+        }
+      );
+      console.log("working");
+      console.log(response);
+      
 
-      event.preventDefault();
+      localStorage.removeItem("__paypal_storage__");
+    } catch (error) {
+      console.log("----------ERROR-------------");
+      console.log(error);
+    }
+  };
 
+  const placeOrder = async () => {
+    try {
       if (!orderDropDetails.country) {
         return alert("country is required");
       }
@@ -79,12 +99,9 @@ const CheckOut = () => {
       if (!orderDropDetails.postcode) {
         return alert("postcode is required");
       }
-      const { nonce } = await instance.requestPaymentMethod();
-
-
       const response = await axios.post(
         "http://localhost:8080/api/v1/product/place-order",
-        { orderData: orderData.backendCart, orderDropDetails,nonce },
+        { orderData: orderData.backendCart, orderDropDetails },
         {
           headers: {
             Authorization: auth.token,
@@ -93,24 +110,15 @@ const CheckOut = () => {
       );
       alert(response.data.message);
 
-
       //! we have done this to clear our local Storage
       localStorage.removeItem("Globalcart");
-      localStorage.removeItem("__paypal_storage__");
-
       window.location.reload();
     } catch (error) {
-      if (error?.response?.data?.message) {
+      if (error.response.data.message) {
         alert(error.response.data.message);
       }
     }
-
-
-
-
   };
-
-  
 
   const calculateTotal = (itemsArray) => {
     let totalAmount = 0;
@@ -136,7 +144,7 @@ const CheckOut = () => {
         <div className="checkout-title">
           <h2>Product Order Form</h2>
         </div>
-        <div className="checkout-d-flex" style={{ height: "800px" }}>
+        <div className="checkout-d-flex">
           <form className="checkout-form">
             <label className="checkout-label">
               <span>
@@ -225,7 +233,7 @@ const CheckOut = () => {
               />
             </label>
           </form>
-          <div className="checkout-Yorder" style={{ height: "100%" }}>
+          <div className="checkout-Yorder">
             <table className="checkout-table">
               <tbody>
                 <tr>
@@ -258,34 +266,40 @@ const CheckOut = () => {
                 </tr>
               </tbody>
             </table>
-
             <br />
 
-            <div className="d-flex flex-column justify-content-between">
-              <div>
-                {clientToken && (
-                  <DropIn
-                    options={{
-                      authorization: clientToken,
-                      // paypal: {
-                      //   flow: "vault",
-                      // },
-                    }}
-                    onInstance={handleInstance}
-                  />
-                )}
-              </div>
-              <button
-                className="checkout-button"
-                type="button"
-                onClick={(event)=>PlaceOrder(event)}
-              >
-                Place Order
-              </button>
-            </div>
+            <div>
+        {clientToken && (
+          <DropIn
+            options={{
+              authorization: clientToken,
+              // paypal: {
+              //   flow: "vault",
+              // },
+            }}
+            onInstance={handleInstance}
+          />
+        )}
+        <button onClick={handlePayment}>Make payment</button>
+      </div>
+
+            
+
+            <button
+              className="checkout-button"
+              type="button"
+              onClick={placeOrder}
+            >
+              Place Order
+            </button>
           </div>
         </div>
       </div>
+
+     
+      <pre>{JSON.stringify(clientToken, null, 2)}</pre>
+      <pre>{JSON.stringify(instance, null, 2)}</pre>
+      <pre>{JSON.stringify(cartGlobal, null, 2)}</pre>
     </Layout>
   );
 };

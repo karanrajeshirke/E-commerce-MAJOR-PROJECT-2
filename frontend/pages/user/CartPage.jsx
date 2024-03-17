@@ -112,10 +112,31 @@ const Cart = () => {
     });
   };
 
+  const removeFromCart=async(id)=>
+  {
+     try
+     {
+        const response=await axios.delete(`http://localhost:8080/api/v1/product/deleteCart/${id}`,{
+          headers:
+          {
+            Authorization:auth.token
+          }
+        })
+
+        alert(response.data.message);
+
+        getItemsFromCart();
+     }
+     catch(error)
+     {
+      console.log(error);
+     }
+  }
+
   return (
     <Layout>
       <section className="pt-5 pb-5">
-        <div className="container">
+        <div className="checkout-container">
           <div className="row">
             <div className="col-lg-12 col-md-12 col-12 ">
               <p className="mb-5 text-center">
@@ -196,7 +217,7 @@ const Cart = () => {
                         )}
                       </td>
                       <td className="actions" data-th>
-                        <button className="btn btn-danger">Remove</button>
+                        <button className="btn btn-danger" onClick={()=>removeFromCart(item._id)}>Remove</button>
                       </td>
                     </tr>
                   ))}

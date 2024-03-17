@@ -34,7 +34,7 @@ const productSchema=new mongoose.Schema(
         {
             type:Number,
             required:true,
-            min:1
+            min:0
         },
         photo:
         {

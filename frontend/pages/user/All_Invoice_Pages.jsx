@@ -7,7 +7,6 @@ import { useAuth } from "../../src/context/Auth";
 import { Link } from "react-router-dom";
 
 const InvoicePage = () => {
-
   const [auth, setAuth] = useAuth();
   const [orderdata, setorderData] = useState([]);
 
@@ -50,12 +49,13 @@ const InvoicePage = () => {
                 {orderdata.map((order, index) => {
                   return (
                     <tr key={index}>
-                      <td>{index + 1}</td>
+                      <td className="fa-2x">{index + 1}</td>
                       <td>
                         <Link
-                          to={`/dashboard/user/invoice-page/${index}`} state={{ data:order }}
+                          to={`/dashboard/user/invoice-page/${index}`}
+                          state={{ data: order }}
                         >
-                          View Details
+                          <i class="fa-solid fa-file-invoice fa-2x"></i>
                         </Link>
                       </td>
                     </tr>

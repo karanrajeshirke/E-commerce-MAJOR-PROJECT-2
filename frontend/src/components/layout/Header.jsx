@@ -1,13 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../../context/Auth";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useSearch } from "../../context/Search";
 import { useNavigate } from "react-router-dom";
+import { Avatar, Badge, Space } from "antd";
 const Header = () => {
   const [auth, setAuth] = useAuth();
   const [search, setSearch] = useSearch();
+  const [cartSize, setCartSize] = useState();
   const navigate = useNavigate();
 
   function handleLogout() {
@@ -22,17 +24,6 @@ const Header = () => {
     alert("Logged Out");
   }
 
-  // async function handleSearch() {
-  //   try {
-  //     let response = await axios.get(
-  //       `http://localhost:8080/api/v1/product/search-product/${search.query}`
-  //     );
-  //     setSearch({ ...search, result: response.data.searched_data });
-  //     navigate("/search");
-  //   } catch (error) {
-  //     console.log(error.response.data);
-  //   }
-  // }
   async function handleSearchSubmit(event) {
     event.preventDefault();
     try {
@@ -47,9 +38,41 @@ const Header = () => {
     }
   }
 
-  // useEffect(() => {
-  //   if (search.query != "") handleSearch();
-  // }, [search]);
+  // const getcartSize = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       "http://localhost:8080/api/v1/product/cartSize",
+  //       {
+  //         headers: {
+  //           Authorization: auth.token,
+  //         },
+  //       }
+  //     );
+  //     setCartSize(response.data.length);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  useEffect(() => {
+
+    const getcartSize = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/v1/product/cartSize",
+          {
+            headers: {
+              Authorization: auth.token,
+            },
+          }
+        );
+        setCartSize(response.data.length);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getcartSize();
+  }, []);
 
   return (
     <>
@@ -172,17 +195,17 @@ const Header = () => {
             )}
 
             <li className="nav-item">
-              <Link className="nav-link font-weight-bold text-dark" to="/">
-                CATEGORY
-              </Link>
-            </li>
-
-            <li className="nav-item">
               <Link
                 className="nav-link font-weight-bold text-dark"
                 to="/dashboard/user/cart"
               >
-                CART
+                <Badge
+                  size="large"
+                  count={cartSize ? cartSize : 0}
+                  offset={[10, 5]}
+                >
+                  <h5>CART</h5>
+                </Badge>
               </Link>
             </li>
           </ul>

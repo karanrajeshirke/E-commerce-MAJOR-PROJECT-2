@@ -2,10 +2,14 @@ import { hashPassword } from "../helpers/authHelper.js";
 import userModel from "../models/userModel.js";
 import bcryptjs from "bcryptjs";
 import JWT from "jsonwebtoken";
+import fs from "fs";
+
 export const registerController = async (req, res) => {
   try {
-    let { name, email, password, phone, address, role } = req.body;
+    let { name, email, password, phone, address, role } = req.fields;
+    let { photo } = req.files;
 
+    console.log(req.files);
     if (!name) {
       return res.status(401).send({ message: "name is required" });
     }
@@ -22,6 +26,10 @@ export const registerController = async (req, res) => {
       return res.status(401).send({ message: "address is required" });
     }
 
+    if (photo) {
+      photo.data = fs.readFileSync(photo.path);
+      photo.contentType = photo.type;
+    }
     const existingUser = await userModel.findOne({ email });
 
     if (existingUser) {
@@ -39,6 +47,7 @@ export const registerController = async (req, res) => {
       phone,
       address,
       role,
+      photo,
       password: hashedPassword,
     }).save();
 
@@ -92,7 +101,7 @@ export const loginController = async (req, res) => {
       success: true,
       message: "Logged In Successfully",
       user: {
-        id:user._id,
+        id: user._id,
         name: user.name,
         email: user.email,
         phone: user.phone,
@@ -103,8 +112,7 @@ export const loginController = async (req, res) => {
     });
 
     //! we are sending the user after logged in bcoz this is going to be used when we are in frontend ..we would not needing the detials
-    //!of the user who is logged in ..... and the payload would be useful in backend 
-    
+    //!of the user who is logged in ..... and the payload would be useful in backend
   } catch (error) {
     console.log(error);
     res.status(500).send({
@@ -112,6 +120,25 @@ export const loginController = async (req, res) => {
       message: "Errror in Login",
       error,
     });
+  }
+};
+
+export const getUserPhotoController = async (req, res) => {
+  try
+  {
+    const {userId}=req.params;
+
+    // console.log(us);
+    const user=await userModel.findById(userId).select("photo")
+
+    console.log(user);
+    res.set('Content-type',user.photo.contentType);
+    res.status(200).send(user.photo.data)
+    console.log(user.photo.data);
+  }
+  catch(error)
+  {
+    console.log(error);
   }
 };
 

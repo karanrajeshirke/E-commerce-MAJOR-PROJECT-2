@@ -8,6 +8,14 @@ import { Price } from "../src/components/price";
 import { Link, useNavigate } from "react-router-dom";
 import { Card } from "antd";
 const { Meta } = Card;
+
+// import Card from "@mui/material/Card";
+// import CardActions from "@mui/material/CardActions";
+// import CardContent from "@mui/material/CardContent";
+// import CardMedia from "@mui/material/CardMedia";
+// import Button from "@mui/material/Button";
+// import Typography from "@mui/material/Typography";
+
 const HomePage = () => {
   const navigate = useNavigate();
   const [allProducts, setAllProducts] = useState([]);
@@ -31,7 +39,7 @@ const HomePage = () => {
       let response = await axios.get(
         "http://localhost:8080/api/v1/category/get-allcategory"
       );
-      console.log(response.data.allCategory);
+
       setAllCategories(response.data.allCategory);
     } catch (error) {
       console.log("error fetching in all categoires", error);
@@ -99,8 +107,6 @@ const HomePage = () => {
               })}
             </Space>
           </Radio.Group>
-
-          {JSON.stringify(radioFilter)}
         </div>
         <div className="col-9 next-column mr-4 p-3 d-flex flex-wrap  bg-light justify-content-around">
           {allProducts &&
@@ -147,40 +153,6 @@ const HomePage = () => {
                     <Link to={`/product/${item.slug}`}>More Details</Link>
                   </p>
                 </Card>
-
-                // <div
-                //   className="card  m-2"
-                //   style={{ width: "19rem" }}
-                //   key={item._id}
-                // >
-                //   <img
-                //     src={`http://localhost:8080/api/v1/product/get-product-photo/${item._id}`}
-                //     className="card-img-top"
-                //     alt=""
-                //     style={{ height: "15rem" }}
-                //   />
-                //   <div className="card-body">
-                //     <h5 className="card-title">{item.name}</h5>
-                // <p>
-                //   {item.price.toLocaleString("en-IN", {
-                //     style: "currency",
-                //     currency: "INR",
-                //     maximumFractionDigits: 0,
-                //   })}
-                //   Rs
-                // </p>
-                //     <p className="card-text">
-                //       {item.description.substring(0, 60)}
-                //     </p>
-
-                //     <button
-                //       className="btn btn-primary"
-                //       onClick={() => navigate(`/product/${item.slug}`)}
-                //     >
-                //       More Details
-                //     </button>
-                //   </div>
-                // </div>
               );
             })}
         </div>

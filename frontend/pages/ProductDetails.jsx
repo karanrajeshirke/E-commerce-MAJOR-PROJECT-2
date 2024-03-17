@@ -138,11 +138,10 @@ const ProductDetails = () => {
               })}
           </p>
 
-          {product.inStock != 0 && (
-            <strong>
-              <p className="mb-3">{product.inStock}</p>
-            </strong>
-          )}
+          <p>
+            <strong>Stock</strong>:
+            <span className="mb-3">{product.inStock}</span>
+          </p>
 
           <p>
             <strong>Shipping:</strong> {product.shipping ? "YES" : "NO"}

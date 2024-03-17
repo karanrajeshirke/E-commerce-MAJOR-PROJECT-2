@@ -91,50 +91,7 @@ const AdminProfile = () => {
         <div className="col-2">
           <AdminMenu />
         </div>
-        <div
-          className="col-10   p-5"
-          style={{
-            border: "2px solid black",
-            backgroundColor: "rgb(242,242,242)",
-          }}
-        >
-          <div className="row">
-            <div className="col-4 ">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea
-              repudiandae porro labore dicta repellat nesciunt rem voluptate,
-              adipisci qui commodi fugit pariatur, officia modi perspiciatis?
-              Amet officiis dolores eius distinctio! Impedit fugiat maiores
-              facilis ut eligendi voluptas esse optio, officiis nisi itaque ab
-              totam perspiciatis possimus deserunt nulla magni, aut nam sunt
-              mollitia, ullam neque quisquam corporis maxime magnam! Natus?
-              Dolorem vero tenetur quibusdam ipsam molestias magnam a. Quod sit,
-              qui quae nostrum magnam facilis, at magni officiis provident,
-              eligendi dignissimos dicta ullam dolorum nihil quidem incidunt
-              repudiandae consectetur eius?
-            </div>
-            <div className="col-8 ">
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ad porro
-              nulla alias maxime nemo magni recusandae sequi velit optio
-              possimus voluptas, dicta expedita deserunt soluta. Corrupti
-              voluptate eaque voluptas assumenda? Molestias consectetur officiis
-              quos. Quos voluptatem nisi velit autem amet nostrum? Suscipit
-              quisquam laboriosam rem fugit adipisci quas consequatur veritatis
-              omnis maiores? Rerum, explicabo. Expedita corporis dolor eveniet
-              minus alias. Dolorum veritatis aliquam vero itaque ipsa
-              repellendus facere delectus praesentium tempora. Nihil quidem
-              voluptas quas deserunt nulla! Nobis eum suscipit mollitia numquam
-              expedita reiciendis, accusantium sint, eveniet a cupiditate autem.
-              Nulla itaque vitae rerum in magnam cumque eaque ipsa deleniti
-              commodi, atque corrupti rem optio. Repellat, mollitia, suscipit
-              vel esse perferendis illum inventore fuga consequatur repudiandae
-              eius voluptate deleniti. Eligendi. Dolores hic architecto quae qui
-              temporibus totam excepturi voluptatibus sequi ad voluptatum
-              commodi repellendus placeat at, natus doloremque, cupiditate,
-              officiis nisi! Beatae aliquam exercitationem quisquam fugiat
-              repellendus magnam quas dolor.
-            </div>
-          </div>
-
+        <div className="col-10   p-5">
           <div className="row ">
             <div className="admin-cards-list">
               <div className="admin-card 1">
