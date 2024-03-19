@@ -26,14 +26,15 @@ const HomePage = () => {
   const getAllProducts = async () => {
     try {
       let response = await axios.get(
-        "http://localhost:8080/api/v1/product/get-products"
+       "https://e-commerce-major-project-2-2.onrender.com/api/v1/product/get-products"
       );
       setAllProducts(response.data.allproducts);
     } catch (error) {
       console.log("error fetching in all products", error);
     }
   };
-
+  // "http://localhost:8080/api/v1/product/get-products"
+  //https://e-commerce-major-project-2-2.onrender.com/api/v1/product/get-products
   const getAllCategories = async () => {
     try {
       let response = await axios.get(
