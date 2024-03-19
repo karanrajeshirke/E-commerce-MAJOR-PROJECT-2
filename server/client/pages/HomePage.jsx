@@ -89,7 +89,7 @@ const HomePage = () => {
           </Checkbox.Group>
 
           <hr />
-          <h3>Price</h3>
+          <h3>Price .</h3>
 
           <Radio.Group onChange={(e) => setRadioFilter(e.target.value)}>
             <Space direction="vertical">
