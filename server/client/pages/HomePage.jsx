@@ -4,7 +4,7 @@ import { useAuth } from "../src/context/Auth";
 import { useEffect, useState } from "react";
 import { Checkbox } from "antd";
 import { Input, Radio, Space } from "antd";
-import { Price } from "../src/components/price";
+import { Price } from "../src/components/Price";
 import { Link, useNavigate } from "react-router-dom";
 import { Card } from "antd";
 const { Meta } = Card;
