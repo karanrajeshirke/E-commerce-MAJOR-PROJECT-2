@@ -192,6 +192,7 @@ margin-bottom: 0px;
   padding-right:50px;
 }
 
-
-
-
+.form
+{
+  border: none !important;
+}

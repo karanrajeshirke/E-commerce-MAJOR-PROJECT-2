@@ -1,96 +1,123 @@
+<form
+            className="form shadow  rounded  bg-light"
+            onSubmit={handleUpdateForm}
+          >
+            <div className="form-group" style={{ marginLeft: "30%" }}>
+              <label htmlFor="category">Category</label>
+              <br />
+              <Select
+                name="category"
+                showSearch
+                placeholder="Select a category"
+                optionFilterProp="children"
+                className="w-50"
+                value={productData.category.name}
+                onChange={(value) =>
+                  setProductData((prev) => ({
+                    ...prev,
+                    category: {
+                      ...prev.category,
+                      name: value,
+                      id: allCategories.find((cat) => cat.name === value)._id,
+                    },
+                  }))
+                }
+              >
+                {allCategories &&
+                  allCategories.map((cat) => (
+                    <Select.Option key={cat._id} value={cat.name}>
+                      {cat.name}
+                    </Select.Option>
+                  ))}
+              </Select>
+            </div>
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Balkan Dashboard</title>
+            <div className="form-group" style={{ marginLeft: "30%" }}>
+              <label htmlFor="name">Name</label>
+              <input
+                name="name"
+                type="text"
+                className="form-control w-50 "
+                placeholder="Product name"
+                value={productData.name}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-    />
+            
 
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-    <link
-      href="https://fonts.googleapis.com/css?family=Titillium+Web:400,600,700"
-      rel="stylesheet"
-    />
+            <div className="form-group" style={{ marginLeft: "30%" }}>
+              <label htmlFor="description">Description</label>
+              <input
+                name="description"
+                type="text"
+                className="form-control w-50"
+                placeholder="Product description"
+                value={productData.description}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
-    <link rel="stylesheet" href="assets/styles.css" />
-  </head>
+            <div className="form-group" style={{ marginLeft: "30%" }}>
+              <label htmlFor="price">Price</label>
+              <input
+                name="price"
+                type="number"
+                className="form-control w-50"
+                placeholder="Product price"
+                value={productData.price}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
-  <body>
-    <div id="wrapper">
-      <div class="content-area">
-        <div class="container-fluid">
-          <div class="text-right mt-3 mb-3 d-fixed">
-            <a
-              href="https://github.com/apexcharts/apexcharts.js/tree/master/samples/vanilla-js/dashboards/modern"
-              target="_blank"
-              class="btn btn-outline-primary mr-2"
+            <div className="form-group" style={{ marginLeft: "30%" }}>
+              <label htmlFor="inStock">In Stock</label>
+              <input
+                name="inStock"
+                type="number"
+                className="form-control w-50"
+                placeholder="Product inStock"
+                value={productData.inStock}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-group" style={{ marginLeft: "30%" }}>
+              <label htmlFor="shipping">Shipping</label>
+              <br />
+
+              <Select
+                showSearch
+                placeholder="Select shipping"
+                optionFilterProp="children"
+                className="w-50"
+                name="shipping"
+                value={productData.shipping ? "YES" : "NO"}
+                onChange={(value) =>
+                  setProductData((prev) => ({
+                    ...prev,
+                    shipping: value,
+                  }))
+                }
+                required
+              >
+                <Select.Option value="1">YES</Select.Option>
+                <Select.Option value="0">NO</Select.Option>
+              </Select>
+            </div>
+
+            <button
+              className="btn btn-outline-dark mt-3"
+              type="submit"
+              style={{ marginLeft: "30%" }}
             >
-              <span class="btn-text">View Code</span>
-            </a>
-          </div>
-          <div class="main">
-            <div class="row sparkboxes mt-4 mb-4">
-              <div class="col-md-4">
-                <div class="box box1">
-                  <div id="spark1"></div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="box box2">
-                  <div id="spark2"></div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="box box3">
-                  <div id="spark3"></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="row mt-5 mb-4">
-              <div class="col-md-6">
-                <div class="box">
-                  <div id="bar"></div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="box">
-                  <div id="donut"></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="row mt-4 mb-4">
-              <div class="col-md-6">
-                <div class="box">
-                  <div id="area"></div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="box">
-                  <div id="line"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.slim.min.js"></script>
-    <script src="../../../../dist/apexcharts.js"></script>
-    <script src="assets/data.js"></script>
-    <script src="assets/scripts.js"></script>
-
-    <script></script>
-  </body>
-</html>
+              Submit
+            </button>
+            <br />
+            <br />
+            <br />
+          </form>

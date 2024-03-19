@@ -28,6 +28,7 @@ const AdminProfile = () => {
           },
         }
       );
+      console.log(response);
       setStatusNames(response.data.namesArr);
       setStatusCount(response.data.valuesArr);
     } catch (error) {

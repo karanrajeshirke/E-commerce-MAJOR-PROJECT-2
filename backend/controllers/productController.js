@@ -766,36 +766,21 @@ export const getStatus = async (req, res) => {
 export const getStatusCount = async (req, res) => {
   try {
     const id = req.user._id;
+
     const Not_processed = await adminOrderModel.findOne({ seller: id });
     const Processing = await adminOrderModel.findOne({ seller: id });
     const Shipped = await adminOrderModel.findOne({ seller: id });
     const Delivered = await adminOrderModel.findOne({ seller: id });
     const Cancelled = await adminOrderModel.findOne({ seller: id });
 
-    const l1 = Not_processed.products.filter((item) => {
-      return item.status === "Not Process";
-    });
 
-    const l2 = Processing.products.filter((item) => {
-      return item.status === "Processing";
-    });
-    const l3 = Shipped.products.filter((item) => {
-      return item.status === "Shipped";
-    });
-    const l4 = Delivered.products.filter((item) => {
-      return item.status === "Delivered";
-    });
-    const l5 = Cancelled.products.filter((item) => {
-      return item.status === "Cancelled";
-    });
+    const l1 = Not_processed ? Not_processed.products.filter((item) => item.status === "Not Process") : [];
+    const l2 = Processing ? Processing.products.filter((item) => item.status === "Processing") : [];
+    const l3 = Shipped ? Shipped.products.filter((item) => item.status === "Shipped") : [];
+    const l4 = Delivered ? Delivered.products.filter((item) => item.status === "Delivered") : [];
+    const l5 = Cancelled ? Cancelled.products.filter((item) => item.status === "Cancelled") : [];
 
-    const namesArr = [
-      "Not_processed",
-      "Processing",
-      "Shipped",
-      "Delivered",
-      "Cancelled",
-    ];
+    const namesArr = ["Not_processed", "Processing", "Shipped", "Delivered", "Cancelled"];
     const valuesArr = [l1.length, l2.length, l3.length, l4.length, l5.length];
 
     res.status(200).send({
@@ -804,6 +789,7 @@ export const getStatusCount = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    res.status(500).send("Internal Server Error");
   }
 };
 
@@ -812,7 +798,7 @@ export const getIndividualProductsCount = async (req, res) => {
     const id = req.user._id;
 
     console.log(id);
-    const data = await adminOrderModel.findOne({ seller: id }).populate({
+    const data = await adminOrderModel.findOne({ seller: id }).select("-photo").populate({
       path: "products.product",
       select: "-photo",
     });
@@ -820,15 +806,17 @@ export const getIndividualProductsCount = async (req, res) => {
     console.log(data);
 
     const productsByCount = {};
-    for (const item of data.products) {
-      const key = item.product.name;
+    if (data && data.products) {
+      for (const item of data.products) {
+        const key = item.product.name;
 
-      const quantity = parseInt(item.quantity);
+        const quantity = parseInt(item.quantity);
 
-      if (!productsByCount[key]) {
-        productsByCount[key] = quantity;
-      } else {
-        productsByCount[key] = productsByCount[key] + quantity;
+        if (!productsByCount[key]) {
+          productsByCount[key] = quantity;
+        } else {
+          productsByCount[key] = productsByCount[key] + quantity;
+        }
       }
     }
 
@@ -848,6 +836,7 @@ export const getIndividualProductsCount = async (req, res) => {
   }
 };
 
+
 export const adminProfileDetails = async (req, res) => {
   try {
     const id = req.user._id;
@@ -858,20 +847,24 @@ export const adminProfileDetails = async (req, res) => {
       path: "products.product",
       select: "-photo",
     });
+
     let amount = 0;
-    adminOrders.products.forEach((item) => {
-      amount = amount + item.product.price * parseInt(item.quantity);
-    });
+    if (adminOrders && adminOrders.products) {
+      adminOrders.products.forEach((item) => {
+        amount = amount + item.product.price * parseInt(item.quantity);
+      });
+    }
 
     res.status(200).send({
       productsCount: products.length,
-      ordersCount: adminOrders.products.length,
+      ordersCount: adminOrders ? adminOrders.products.length : 0,
       amount,
     });
   } catch (error) {
     console.log(error);
   }
 };
+
 
 export const brainTreeTokenController = async (req, res) => {
   try {

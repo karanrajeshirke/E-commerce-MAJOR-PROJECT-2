@@ -112,9 +112,11 @@ const SingleProduct = () => {
                 </p>
                 <div className="mt-4">
                   <Link to={`/dashboard/admin/product/update/${slug}`}>
-                    <Button className="mr-3" type="primary" size="large">Edit</Button>
+                    <Button className="mr-3" type="primary" size="large">
+                      Edit
+                    </Button>
                   </Link>
-                  <Button type="danger" size="large" onClick={deleteProduct}>Delete</Button>
+                  {/* <Button type="danger" size="large" onClick={deleteProduct}>Delete</Button> */}
                 </div>
               </div>
             </div>
