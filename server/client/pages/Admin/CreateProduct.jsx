@@ -24,7 +24,7 @@ const CreateProduct = () => {
     async function fetchData() {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/v1/category/get-allcategory"
+          "https://e-commerce-major-project-2-2.onrender.com/api/v1/category/get-allcategory"
         );
         setAllCategories(response.data.allCategory);
       } catch (error) {
@@ -53,7 +53,7 @@ const CreateProduct = () => {
       }
 
       const response = await axios.post(
-        "http://localhost:8080/api/v1/product/create-product",
+        "https://e-commerce-major-project-2-2.onrender.com/api/v1/product/create-product",
         formData,
         {
           headers: {

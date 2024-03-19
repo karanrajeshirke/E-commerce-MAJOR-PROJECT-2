@@ -32,7 +32,7 @@ const SearchPage = () => {
                   cover={
                     <img
                       alt="example"
-                      src={`http://localhost:8080/api/v1/product/get-product-photo/${item._id}`}
+                      src={`https://e-commerce-major-project-2-2.onrender.com/api/v1/product/get-product-photo/${item._id}`}
                     />
                   }
                 >

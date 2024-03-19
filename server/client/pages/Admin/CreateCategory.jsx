@@ -12,7 +12,7 @@ const CreateCategory = () => {
   const [auth,setAuth]=useAuth()
   const getData = async () => {
     let response = await axios.get(
-      "http://localhost:8080/api/v1/category/get-allcategory"
+      "https://e-commerce-major-project-2-2.onrender.com/api/v1/category/get-allcategory"
     );
     setAllCategories(response.data.allCategory);
   };
@@ -30,7 +30,7 @@ const CreateCategory = () => {
     event.preventDefault()
     try
     {
-      let response=await axios.post('http://localhost:8080/api/v1/category/create-category',{name:addCategory},
+      let response=await axios.post('https://e-commerce-major-project-2-2.onrender.com/api/v1/category/create-category',{name:addCategory},
       {
         headers:
         {
@@ -95,7 +95,7 @@ const CreateCategory = () => {
     event.preventDefault()
     try
     {
-      let response=await axios.put(`http://localhost:8080/api/v1/category/update-category/${selectedCat._id}`,{name:selectedCat.name},
+      let response=await axios.put(`https://e-commerce-major-project-2-2.onrender.com/api/v1/category/update-category/${selectedCat._id}`,{name:selectedCat.name},
       {
         headers:
         {
@@ -127,7 +127,7 @@ const CreateCategory = () => {
   {
     try
     {
-      let response=await axios.delete(`http://localhost:8080/api/v1/category/delete-category/${id}`,
+      let response=await axios.delete(`https://e-commerce-major-project-2-2.onrender.com/api/v1/category/delete-category/${id}`,
       {
         headers:
         {

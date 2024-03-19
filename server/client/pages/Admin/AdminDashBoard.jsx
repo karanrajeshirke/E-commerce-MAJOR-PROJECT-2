@@ -22,7 +22,7 @@ const AdminDashboard = () => {
                 <div className="card-body">
                   <div className="d-flex flex-column align-items-center text-center">
                     <img
-                      src={`http://localhost:8080/api/v1/auth/getphoto/${auth.user.id}`}
+                      src={`https://e-commerce-major-project-2-2.onrender.com/api/v1/auth/getphoto/${auth.user.id}`}
                       alt="Admin"
                       width={300}
                     />

@@ -30,13 +30,13 @@ dotenv.config();
 connectDB();
 
 //!middleware
-const corsOptions = {
-    origin: ["https://e-commerce-major-project-2-2.onrender.com"], 
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true, 
-  };
+// const corsOptions = {
+//     origin: ["https://e-commerce-major-project-2-2.onrender.com"], 
+//     methods: ["GET", "POST", "PUT", "DELETE"],
+//     credentials: true, 
+//   };
 
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 // app.use(morgan('dev'))
 

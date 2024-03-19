@@ -21,7 +21,7 @@ const ProductDetails = () => {
   const getProductDetails = async () => {
     try {
       let response = await axios.get(
-        `http://localhost:8080/api/v1/product/get-single-product/${slug}`
+        `https://e-commerce-major-project-2-2.onrender.com/api/v1/product/get-single-product/${slug}`
       );
       console.log(response.data.product.reviews);
       setReviews(response.data.product.reviews);
@@ -38,7 +38,7 @@ const ProductDetails = () => {
   const getSimilarProducts = async (pid, cid) => {
     try {
       let response = await axios.get(
-        `http://localhost:8080/api/v1/product/get-similar-products/${pid}/${cid}`
+        `https://e-commerce-major-project-2-2.onrender.com/api/v1/product/get-similar-products/${pid}/${cid}`
       );
       setSimilarProduct(response.data.simPro);
     } catch (error) {
@@ -55,7 +55,7 @@ const ProductDetails = () => {
   const addToCart = async (pid) => {
     try {
       let response = await axios.get(
-        `http://localhost:8080/api/v1/product/add-to-cart/${pid}`,
+        `https://e-commerce-major-project-2-2.onrender.com/api/v1/product/add-to-cart/${pid}`,
         {
           headers: {
             Authorization: auth.token,
@@ -91,7 +91,7 @@ const ProductDetails = () => {
               product._id && (
                 <img
                   alt="example"
-                  src={`http://localhost:8080/api/v1/product/get-product-photo/${product._id}`}
+                  src={`https://e-commerce-major-project-2-2.onrender.com/api/v1/product/get-product-photo/${product._id}`}
                 />
               )
             }
@@ -210,7 +210,7 @@ const ProductDetails = () => {
                     item._id && (
                       <img
                         alt="example"
-                        src={`http://localhost:8080/api/v1/product/get-product-photo/${item._id}`}
+                        src={`https://e-commerce-major-project-2-2.onrender.com/api/v1/product/get-product-photo/${item._id}`}
                       />
                     )
                   }

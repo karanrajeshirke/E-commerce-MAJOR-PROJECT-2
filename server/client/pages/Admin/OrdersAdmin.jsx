@@ -14,7 +14,7 @@ const OrdersAdmin = () => {
   const getAllOrders = async (req, res) => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/v1/product/admin-orders",
+        "https://e-commerce-major-project-2-2.onrender.com/api/v1/product/admin-orders",
         {
           headers: {
             Authorization: auth.token,
@@ -31,7 +31,7 @@ const OrdersAdmin = () => {
   const changeStatusOrder = async (pid, bid, stat, id) => {
     try {
       const response = await axios.put(
-        `http://localhost:8080/api/v1/product/update-order-status/${pid}/${bid}/${stat}/${id}`,
+        `https://e-commerce-major-project-2-2.onrender.com/api/v1/product/update-order-status/${pid}/${bid}/${stat}/${id}`,
         {},
         {
           headers: {
@@ -48,7 +48,7 @@ const OrdersAdmin = () => {
   const getOrdersParticularStatus = async (status) => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/v1/product/${status}`,
+        `https://e-commerce-major-project-2-2.onrender.com/api/v1/product/${status}`,
         {
           headers: {
             Authorization: auth.token,

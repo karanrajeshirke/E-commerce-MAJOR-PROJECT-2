@@ -21,7 +21,7 @@ const AdminProfile = () => {
   const getStatusCount = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/v1/product/getcount",
+        "https://e-commerce-major-project-2-2.onrender.com/api/v1/product/getcount",
         {
           headers: {
             Authorization: auth.token,
@@ -39,7 +39,7 @@ const AdminProfile = () => {
   const getProductCount = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/v1/product/individualProductCount",
+        "https://e-commerce-major-project-2-2.onrender.com/api/v1/product/individualProductCount",
         {
           headers: {
             Authorization: auth.token,
@@ -56,7 +56,7 @@ const AdminProfile = () => {
   const getAdminProfileOrder = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/v1/product/admin-profile-details",
+        "https://e-commerce-major-project-2-2.onrender.com/api/v1/product/admin-profile-details",
         {
           headers: {
             Authorization: auth.token,

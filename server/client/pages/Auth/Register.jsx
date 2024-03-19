@@ -39,7 +39,7 @@ const Register = () => {
 
       console.log(formData);
       let response = await axios.post(
-        "http://localhost:8080/api/v1/auth/register",
+        "https://e-commerce-major-project-2-2.onrender.com/api/v1/auth/register",
         formData
       );
       console.log(response.data);

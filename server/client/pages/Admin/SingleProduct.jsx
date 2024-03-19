@@ -20,7 +20,7 @@ const SingleProduct = () => {
   const getSingleUser = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/v1/product/get-single-product/${slug}`
+        `https://e-commerce-major-project-2-2.onrender.com/api/v1/product/get-single-product/${slug}`
       );
       setSingleUserData(response.data.product);
       console.log(response.data.product);
@@ -32,7 +32,7 @@ const SingleProduct = () => {
   const deleteProduct = async () => {
     try {
       const response = await axios.delete(
-        `http://localhost:8080/api/v1/product/delete-product/${singleUserData._id}`,
+        `https://e-commerce-major-project-2-2.onrender.com/api/v1/product/delete-product/${singleUserData._id}`,
         {
           headers: {
             Authorization: auth.token,
@@ -65,7 +65,7 @@ const SingleProduct = () => {
                   singleUserData._id && (
                     <img
                       alt="example"
-                      src={`http://localhost:8080/api/v1/product/get-product-photo/${singleUserData._id}`}
+                      src={`https://e-commerce-major-project-2-2.onrender.com/api/v1/product/get-product-photo/${singleUserData._id}`}
                     />
                   )
                 }

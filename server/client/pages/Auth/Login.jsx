@@ -29,7 +29,7 @@ const Login = () => {
 
     try {
       let response = await axios.post(
-        "http://localhost:8080/api/v1/auth/login",
+        "https://e-commerce-major-project-2-2.onrender.com/api/v1/auth/login",
         user
       );
 

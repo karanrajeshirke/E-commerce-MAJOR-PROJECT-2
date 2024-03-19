@@ -28,7 +28,7 @@ const Header = () => {
     event.preventDefault();
     try {
       let response = await axios.get(
-        `http://localhost:8080/api/v1/product/search-product/${search.query}`
+        `https://e-commerce-major-project-2-2.onrender.com/api/v1/product/search-product/${search.query}`
       );
       console.log(response.data.searched_data);
       setSearch({ ...search, result: response.data.searched_data });
@@ -41,7 +41,7 @@ const Header = () => {
   // const getcartSize = async () => {
   //   try {
   //     const response = await axios.get(
-  //       "http://localhost:8080/api/v1/product/cartSize",
+  //       "https://e-commerce-major-project-2-2.onrender.com/api/v1/product/cartSize",
   //       {
   //         headers: {
   //           Authorization: auth.token,
@@ -59,7 +59,7 @@ const Header = () => {
     const getcartSize = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/v1/product/cartSize",
+          "https://e-commerce-major-project-2-2.onrender.com/api/v1/product/cartSize",
           {
             headers: {
               Authorization: auth.token,

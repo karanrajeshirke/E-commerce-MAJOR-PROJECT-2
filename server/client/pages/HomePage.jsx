@@ -21,7 +21,7 @@ const HomePage = () => {
   const getAllProducts = async () => {
     try {
       let response = await axios.get(
-        "http://localhost:8080/api/v1/product/get-products"
+        "https://e-commerce-major-project-2-2.onrender.com/api/v1/product/get-products"
       );
       setAllProducts(response.data.allproducts);
     } catch (error) {
@@ -32,7 +32,7 @@ const HomePage = () => {
   const getAllCategories = async () => {
     try {
       let response = await axios.get(
-        "http://localhost:8080/api/v1/category/get-allcategory"
+        "https://e-commerce-major-project-2-2.onrender.com/api/v1/category/get-allcategory"
       );
 
       setAllCategories(response.data.allCategory);
@@ -58,7 +58,7 @@ const HomePage = () => {
   const filterProduct = async () => {
     try {
       let response = await axios.post(
-        "http://localhost:8080/api/v1/product/product-filters",
+        "https://e-commerce-major-project-2-2.onrender.com/api/v1/product/product-filters",
         { catFilter, radioFilter }
       );
       // console.log(response.data.filteredData);
@@ -119,7 +119,7 @@ const HomePage = () => {
                     item._id && (
                       <img
                         alt="example"
-                        src={`http://localhost:8080/api/v1/product/get-product-photo/${item._id}`}
+                        src={`https://e-commerce-major-project-2-2.onrender.com/api/v1/product/get-product-photo/${item._id}`}
                       />
                     )
                   }

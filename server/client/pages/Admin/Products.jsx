@@ -14,7 +14,7 @@ const Products = () => {
   const getAllProducts = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/v1/product/get-products/${adminId}`,
+        `https://e-commerce-major-project-2-2.onrender.com/api/v1/product/get-products/${adminId}`,
         {
           headers: {
             Authorization: auth.token,
@@ -60,7 +60,7 @@ const Products = () => {
                       item._id && (
                         <img
                           alt="example"
-                          src={`http://localhost:8080/api/v1/product/get-product-photo/${item._id}`}
+                          src={`https://e-commerce-major-project-2-2.onrender.com/api/v1/product/get-product-photo/${item._id}`}
                         />
                       )
                     }
@@ -104,7 +104,7 @@ export default Products;
 //     <p>{pro.name}</p>
 //     <div className="card m-2" style={{ width: "18rem" }}>
 //       <img
-//         src={`http://localhost:8080/api/v1/product/get-product-photo/${pro._id}`}
+//         src={`https://e-commerce-major-project-2-2.onrender.com/api/v1/product/get-product-photo/${pro._id}`}
 //         className="card-img-top"
 //         alt={pro.name}
 //       />

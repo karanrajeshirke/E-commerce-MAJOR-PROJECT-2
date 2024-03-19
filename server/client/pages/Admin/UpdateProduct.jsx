@@ -25,7 +25,7 @@ const UpdateProduct = () => {
   const getAllCategories = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/v1/category/get-allcategory"
+        "https://e-commerce-major-project-2-2.onrender.com/api/v1/category/get-allcategory"
       );
       setAllCategories(response.data.allCategory);
     } catch (error) {
@@ -36,7 +36,7 @@ const UpdateProduct = () => {
   const getProductData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/v1/product/get-single-product/${slug}`
+        `https://e-commerce-major-project-2-2.onrender.com/api/v1/product/get-single-product/${slug}`
       );
       const product = response.data.product;
       setProductData({
@@ -72,7 +72,7 @@ const UpdateProduct = () => {
       }
 
       const response = await axios.put(
-        `http://localhost:8080/api/v1/product/update-product/${productData.id}`,
+        `https://e-commerce-major-project-2-2.onrender.com/api/v1/product/update-product/${productData.id}`,
         formData,
         {
           headers: {
@@ -124,7 +124,7 @@ const UpdateProduct = () => {
                     src={
                       productData &&
                       productData.id &&
-                      `http://localhost:8080/api/v1/product/get-product-photo/${productData.id}`
+                      `https://e-commerce-major-project-2-2.onrender.com/api/v1/product/get-product-photo/${productData.id}`
                     }
                     style={{
                       marginTop: "35px",
