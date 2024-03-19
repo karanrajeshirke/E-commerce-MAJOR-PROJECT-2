@@ -81,7 +81,7 @@ const Header = () => {
         style={{ boxShadow: "0px 0px 20px rgba(0, 0, 0, 0.2)" }}
       >
         <a className="navbar-brand font-weight-bold text-dark" href="#">
-          Navbar
+          NAVBAR.
         </a>
 
         <form
