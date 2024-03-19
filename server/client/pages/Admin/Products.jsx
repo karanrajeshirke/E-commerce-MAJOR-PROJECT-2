@@ -33,7 +33,6 @@ const Products = () => {
   }, []);
   return (
     <Layout>
-      {JSON.stringify(auth)}
       <h1>ALL PRODUCTS HERE </h1>
 
       <div className="row">
