@@ -26,6 +26,10 @@ export const registerController = async (req, res) => {
       return res.status(401).send({ message: "address is required" });
     }
 
+    if (!photo) {
+      return res.status(401).send({ message: "photo is required" });
+    }
+
     if (photo) {
       photo.data = fs.readFileSync(photo.path);
       photo.contentType = photo.type;
