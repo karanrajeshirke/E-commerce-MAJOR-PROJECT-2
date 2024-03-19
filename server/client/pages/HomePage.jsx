@@ -17,13 +17,14 @@ const HomePage = () => {
   const [allCategories, setAllCategories] = useState([]);
   const [catFilter, setCatFilter] = useState([]);
   const [radioFilter, setRadioFilter] = useState([]);
-
+  const [loading, setLoading] = useState(true);
   const getAllProducts = async () => {
     try {
       let response = await axios.get(
         "https://e-commerce-major-project-2-2.onrender.com/api/v1/product/get-products"
       );
       setAllProducts(response.data.allproducts);
+      setLoading(false);
     } catch (error) {
       console.log("error fetching in all products", error);
     }
@@ -103,54 +104,68 @@ const HomePage = () => {
             </Space>
           </Radio.Group>
         </div>
-        <div className="col-9 next-column mr-4 p-3 d-flex flex-wrap  bg-light justify-content-around">
-          {allProducts &&
-            allProducts.map((item) => {
-              return (
-                <Card
-                  key={item._id}
-                  className="m-3"
-                  hoverable
-                  style={{
-                    width: 250,
-                  }}
-                  cover={
-                    item &&
-                    item._id && (
-                      <img
-                        alt="example"
-                        src={`https://e-commerce-major-project-2-2.onrender.com/api/v1/product/get-product-photo/${item._id}`}
-                      />
-                    )
-                  }
-                >
-                  <Meta
-                    title={item.name}
-                    description={
-                      <p
-                        style={{
-                          fontWeight: "bold",
-                          fontSize: "1.5rem",
-                          color: "#1ec51e",
-                        }}
-                      >
-                        {item.price.toLocaleString("en-IN", {
-                          style: "currency",
-                          currency: "INR",
-                          maximumFractionDigits: 0,
-                        })}
-                      </p>
+        {loading ? (
+          <div className="  d-flex align-items-center justify-content-center flex-column">
+            <div
+              class="spinner-border text-primary"
+              role="status"
+              style={{ width: "3rem", height: " 3rem" }}
+            ></div>
+            <br />
+            <div>
+              <span style={{ fontSize: "30px" }}>Loading ...</span>
+            </div>
+          </div>
+        ) : (
+          <div className="col-9 next-column mr-4 p-3 d-flex flex-wrap  bg-light justify-content-around">
+            {allProducts &&
+              allProducts.map((item) => {
+                return (
+                  <Card
+                    key={item._id}
+                    className="m-3"
+                    hoverable
+                    style={{
+                      width: 250,
+                    }}
+                    cover={
+                      item &&
+                      item._id && (
+                        <img
+                          alt="example"
+                          src={`http://localhost:8080/api/v1/product/get-product-photo/${item._id}`}
+                        />
+                      )
                     }
-                  />
-                  <p>
-                    {item.description.substring(0, 60)}
-                    <br />
-                    <Link to={`/product/${item.slug}`}>More Details</Link>
-                  </p>
-                </Card>
-              );
-            })}
-        </div>
+                  >
+                    <Meta
+                      title={item.name}
+                      description={
+                        <p
+                          style={{
+                            fontWeight: "bold",
+                            fontSize: "1.5rem",
+                            color: "#1ec51e",
+                          }}
+                        >
+                          {item.price.toLocaleString("en-IN", {
+                            style: "currency",
+                            currency: "INR",
+                            maximumFractionDigits: 0,
+                          })}
+                        </p>
+                      }
+                    />
+                    <p>
+                      {item.description.substring(0, 60)}
+                      <br />
+                      <Link to={`/product/${item.slug}`}>More Details</Link>
+                    </p>
+                  </Card>
+                );
+              })}
+          </div>
+        )}
       </div>
     </Layout>
   );
