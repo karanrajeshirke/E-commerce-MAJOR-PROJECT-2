@@ -54,25 +54,25 @@ const Header = () => {
   //   }
   // };
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    const getcartSize = async () => {
-      try {
-        const response = await axios.get(
-          "https://e-commerce-major-project-2-2.onrender.com/api/v1/product/cartSize",
-          {
-            headers: {
-              Authorization: auth.token,
-            },
-          }
-        );
-        setCartSize(response.data.length);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getcartSize();
-  }, []);
+  //   const getcartSize = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         "https://e-commerce-major-project-2-2.onrender.com/api/v1/product/cartSize",
+  //         {
+  //           headers: {
+  //             Authorization: auth.token,
+  //           },
+  //         }
+  //       );
+  //       setCartSize(response.data.length);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   getcartSize();
+  // }, []);
 
   return (
     <>
@@ -199,13 +199,13 @@ const Header = () => {
                 className="nav-link font-weight-bold text-dark"
                 to="/dashboard/user/cart"
               >
-                <Badge
+                {/* <Badge
                   size="large"
                   count={cartSize ? cartSize : 0}
                   offset={[10, 5]}
                 >
                   <h5>CART</h5>
-                </Badge>
+                </Badge> */}
               </Link>
             </li>
           </ul>
