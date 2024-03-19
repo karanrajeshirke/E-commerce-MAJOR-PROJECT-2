@@ -5,17 +5,11 @@ import { useEffect, useState } from "react";
 import { Checkbox } from "antd";
 import { Input, Radio, Space } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import { Price } from "../src/components/Price";
+import { Price } from "../src/components/PriceStat";
 
 import { Card } from "antd";
 const { Meta } = Card;
 
-// import Card from "@mui/material/Card";
-// import CardActions from "@mui/material/CardActions";
-// import CardContent from "@mui/material/CardContent";
-// import CardMedia from "@mui/material/CardMedia";
-// import Button from "@mui/material/Button";
-// import Typography from "@mui/material/Typography";
 
 const HomePage = () => {
   const navigate = useNavigate();
