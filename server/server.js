@@ -59,7 +59,7 @@ app.delete("/delete", async (req, res) => {
   //   res.send({message:"delete"})
 });
 
-const PORT = process.env.PORT_NO || 8080;
+const PORT = process.env.PORT_NO || 3000;
 
 app.listen(PORT, () => {
   console.log(
