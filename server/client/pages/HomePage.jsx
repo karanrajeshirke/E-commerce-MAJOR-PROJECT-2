@@ -4,8 +4,9 @@ import { useAuth } from "../src/context/Auth";
 import { useEffect, useState } from "react";
 import { Checkbox } from "antd";
 import { Input, Radio, Space } from "antd";
-import { Price } from "../src/components/Price";
 import { Link, useNavigate } from "react-router-dom";
+import { Price } from "../src/components/Price";
+
 import { Card } from "antd";
 const { Meta } = Card;
 
@@ -26,15 +27,14 @@ const HomePage = () => {
   const getAllProducts = async () => {
     try {
       let response = await axios.get(
-       "https://e-commerce-major-project-2-2.onrender.com/api/v1/product/get-products"
+        "http://localhost:8080/api/v1/product/get-products"
       );
       setAllProducts(response.data.allproducts);
     } catch (error) {
       console.log("error fetching in all products", error);
     }
   };
-  // "http://localhost:8080/api/v1/product/get-products"
-  //https://e-commerce-major-project-2-2.onrender.com/api/v1/product/get-products
+
   const getAllCategories = async () => {
     try {
       let response = await axios.get(
